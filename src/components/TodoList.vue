@@ -134,17 +134,18 @@ import LoadingSpinner from './LoadingSpinner.vue';
 import AlertModal from './AlertModal.vue';
 import DeleteTaskModal from './DeleteTaskModal.vue';
 import { useToast } from 'vue-toastification'
+import type { Todo } from '@/stores/todo';
 
 const store = useTodoStore();
 const preferences = usePreferencesStore();
 const showAddModal = ref(false);
 const quickAdd = ref('');
-const editingTodo = ref(null);
+const editingTodo = ref<Todo | null>(null);
 const toast = useToast()
 const showConfirmDelete = ref(false);
 const todoToDelete = ref<string | null>(null);
 const showConfirmComplete = ref(false);
-const todoToToggle = ref<any | null>(null);
+const todoToToggle = ref<Todo | null>(null);
 
 const filters = [
   { label: 'All Tasks', value: 'all' },
@@ -153,7 +154,14 @@ const filters = [
   { label: 'High Priority', value: 'high' }
 ];
 
-const toggleTodo = async (todo) => {
+interface TodoData {
+  title: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: Date;
+}
+
+const toggleTodo = async (todo: Todo) => {
   if (!todo.completed) {
     todoToToggle.value = todo;
     showConfirmComplete.value = true;
@@ -174,7 +182,7 @@ const closeModal = () => {
   editingTodo.value = null;
 };
 
-const editTodo = (todo) => {
+const editTodo = (todo: Todo) => {
   editingTodo.value = todo;
   showAddModal.value = true;
 };
@@ -214,7 +222,7 @@ const handleCompleteConfirm = async () => {
   }
 };
 
-const addTodo = async (todoData) => {
+const addTodo = async (todoData: TodoData) => {
   try {
     if (editingTodo.value) {
       const updates = {
@@ -255,9 +263,9 @@ const quickAddTodo = async () => {
   }
 
   try {
-    const todoData = {
+    const todoData: TodoData = {
       title: quickAdd.value.trim(),
-      priority: 'medium',
+      priority: 'medium' as const,
       description: ''
     };
 

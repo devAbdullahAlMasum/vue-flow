@@ -25,7 +25,7 @@ interface Todo {
   dueDate?: Date;
   createdAt: Date;
   description?: string;
-  categoryId?: string;
+  categoryId?: string | null;
   tags: string[];
   reminder?: Date;
   isImportant: boolean;
@@ -143,27 +143,36 @@ export const useTodoStore = defineStore('todo', {
             this.todos = snapshot.docs.map(doc => ({
               id: doc.id,
               ...doc.data(),
+              title: doc.data().title || '',
+              userId: doc.data().userId || '',
+              priority: doc.data().priority || 'medium',
               createdAt: doc.data().createdAt?.toDate() || new Date(),
               dueDate: doc.data().dueDate?.toDate() || null,
               completed: doc.data().completed || false,
               tags: doc.data().tags || [],
               isImportant: doc.data().isImportant || false,
-              isBookmarked: doc.data().isBookmarked || false
-            }));
+              isBookmarked: doc.data().isBookmarked || false,
+              description: doc.data().description || '',
+              categoryId: doc.data().categoryId || null
+            })) as Todo[];
             this.isInitialized = true;
           } else {
-            // Handle individual changes
+            // Handle individual changes with proper typing
             snapshot.docChanges().forEach((change) => {
               const data = change.doc.data();
-              const todo = {
+              const todo: Todo = {
                 id: change.doc.id,
-                ...data,
+                title: data.title || '',
+                userId: data.userId || '',
+                priority: data.priority || 'medium',
                 createdAt: data.createdAt?.toDate() || new Date(),
                 dueDate: data.dueDate?.toDate() || null,
                 completed: data.completed || false,
                 tags: data.tags || [],
                 isImportant: data.isImportant || false,
-                isBookmarked: data.isBookmarked || false
+                isBookmarked: data.isBookmarked || false,
+                description: data.description || '',
+                categoryId: data.categoryId || null
               };
 
               if (change.type === 'added' && !this.todos.some(t => t.id === todo.id)) {

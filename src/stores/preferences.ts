@@ -16,6 +16,15 @@ const setStorageItem = <T>(key: string, value: T): void => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
+interface PreferencesState {
+  theme: Theme;
+  animations: boolean;
+  compactMode: boolean;
+  showDescriptions: boolean;
+  defaultView: 'list' | 'grid' | 'calendar';
+  sidebarOpen: boolean;
+}
+
 export const usePreferencesStore = defineStore('preferences', {
   state: () => ({
     theme: getStorageItem<Theme>('todo-theme', {
@@ -27,7 +36,7 @@ export const usePreferencesStore = defineStore('preferences', {
     animations: getStorageItem('todo-animations', true),
     compactMode: getStorageItem('todo-compact-mode', false),
     showDescriptions: getStorageItem('todo-show-descriptions', true),
-    defaultView: getStorageItem('todo-default-view', 'list'),
+    defaultView: getStorageItem<'list' | 'grid' | 'calendar'>('todo-default-view', 'list'),
     sidebarOpen: getStorageItem('todo-sidebar-open', true)
   }),
 
