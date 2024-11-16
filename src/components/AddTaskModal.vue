@@ -117,9 +117,8 @@ import type { Todo } from '@/stores/todo';
 
 const preferences = usePreferencesStore();
 
-// Update the Props interface to be more specific
 interface Props {
-  editingTodo: Todo | undefined; // Remove null, only allow Todo or undefined
+  editingTodo: Record<string, any> | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {

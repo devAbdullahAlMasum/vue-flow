@@ -140,7 +140,7 @@ const store = useTodoStore();
 const preferences = usePreferencesStore();
 const showAddModal = ref(false);
 const quickAdd = ref('');
-const editingTodo = ref<Todo | undefined>(undefined);
+const editingTodo = ref<Record<string, any> | undefined>(undefined);
 const toast = useToast()
 const showConfirmDelete = ref(false);
 const todoToDelete = ref<string | undefined>(undefined);
@@ -184,7 +184,7 @@ const closeModal = () => {
 };
 
 const editTodo = (todo: Todo) => {
-  editingTodo.value = todo;
+  editingTodo.value = todo as Record<string, any>;
   showAddModal.value = true;
 };
 
