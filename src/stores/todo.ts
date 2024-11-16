@@ -3,20 +3,21 @@ import { db, auth } from '@/services/firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { useToast } from 'vue-toastification'
 
-interface Category {
+// Export the interfaces
+export interface Category {
   id: string;
   name: string;
   color: string;
   userId: string;
 }
 
-interface Tag {
+export interface Tag {
   id: string;
   name: string;
   userId: string;
 }
 
-interface Todo {
+export interface Todo {
   id: string;
   title: string;
   completed: boolean;
@@ -32,7 +33,7 @@ interface Todo {
   isBookmarked: boolean;
 }
 
-interface TodoInput {
+export interface TodoInput {
   title: string;
   description?: string;
   priority: 'low' | 'medium' | 'high';
