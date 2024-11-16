@@ -136,28 +136,27 @@ export const useTodoStore = defineStore('todo', {
           orderBy('createdAt', 'desc')
         );
 
-        // Set up real-time listener with proper data conversion
         this.unsubscribe = onSnapshot(q, (snapshot) => {
-          // Only handle changes if store is initialized
           if (!this.isInitialized) {
-            this.todos = snapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data(),
-              title: doc.data().title || '',
-              userId: doc.data().userId || '',
-              priority: doc.data().priority || 'medium',
-              createdAt: doc.data().createdAt?.toDate() || new Date(),
-              dueDate: doc.data().dueDate?.toDate() || null,
-              completed: doc.data().completed || false,
-              tags: doc.data().tags || [],
-              isImportant: doc.data().isImportant || false,
-              isBookmarked: doc.data().isBookmarked || false,
-              description: doc.data().description || '',
-              categoryId: doc.data().categoryId || null
-            })) as Todo[];
+            this.todos = snapshot.docs.map(doc => {
+              const data = doc.data();
+              return {
+                id: doc.id,
+                title: data.title || '',
+                userId: data.userId || '',
+                priority: data.priority || 'medium',
+                createdAt: data.createdAt?.toDate() || new Date(),
+                dueDate: data.dueDate?.toDate() || undefined,
+                completed: data.completed || false,
+                tags: data.tags || [],
+                isImportant: data.isImportant || false,
+                isBookmarked: data.isBookmarked || false,
+                description: data.description || '',
+                categoryId: data.categoryId || null
+              } as Todo;
+            });
             this.isInitialized = true;
           } else {
-            // Handle individual changes with proper typing
             snapshot.docChanges().forEach((change) => {
               const data = change.doc.data();
               const todo: Todo = {
@@ -166,7 +165,7 @@ export const useTodoStore = defineStore('todo', {
                 userId: data.userId || '',
                 priority: data.priority || 'medium',
                 createdAt: data.createdAt?.toDate() || new Date(),
-                dueDate: data.dueDate?.toDate() || null,
+                dueDate: data.dueDate?.toDate() || undefined,
                 completed: data.completed || false,
                 tags: data.tags || [],
                 isImportant: data.isImportant || false,
@@ -188,7 +187,6 @@ export const useTodoStore = defineStore('todo', {
             });
           }
         });
-
       } catch (error) {
         console.error('Error initializing store:', error);
         toast.error("Failed to load tasks");

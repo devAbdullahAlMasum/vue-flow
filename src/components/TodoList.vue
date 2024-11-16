@@ -134,7 +134,7 @@ import LoadingSpinner from './LoadingSpinner.vue';
 import AlertModal from './AlertModal.vue';
 import DeleteTaskModal from './DeleteTaskModal.vue';
 import { useToast } from 'vue-toastification'
-import type { Todo } from '@/stores/todo';
+import type { Todo, TodoInput } from '@/stores/todo';
 
 const store = useTodoStore();
 const preferences = usePreferencesStore();
@@ -147,11 +147,12 @@ const todoToDelete = ref<string | null>(null);
 const showConfirmComplete = ref(false);
 const todoToToggle = ref<Todo | null>(null);
 
-const filters = [
+const filters: Array<{ label: string; value: 'all' | 'active' | 'completed' | 'important' | 'bookmarked' }> = [
   { label: 'All Tasks', value: 'all' },
   { label: 'Active', value: 'active' },
   { label: 'Completed', value: 'completed' },
-  { label: 'High Priority', value: 'high' }
+  { label: 'Important', value: 'important' },
+  { label: 'Bookmarked', value: 'bookmarked' }
 ];
 
 interface TodoData {
@@ -225,27 +226,24 @@ const handleCompleteConfirm = async () => {
 const addTodo = async (todoData: TodoData) => {
   try {
     if (editingTodo.value) {
-      const updates = {
+      const updates: Partial<Todo> = {
         title: todoData.title,
         description: todoData.description || '',
-        priority: todoData.priority || 'medium'
+        priority: todoData.priority,
+        dueDate: todoData.dueDate
       };
-
-      if (todoData.dueDate) {
-        updates.dueDate = todoData.dueDate;
-      }
 
       await store.updateTodo(editingTodo.value.id, updates);
       toast.success("Task updated successfully");
       editingTodo.value = null;
     } else {
-      await store.addTodo({
-        ...todoData,
-        tags: [],
-        isImportant: false,
-        isBookmarked: false,
-        categoryId: null
-      });
+      const newTodo: TodoInput = {
+        title: todoData.title,
+        description: todoData.description,
+        priority: todoData.priority,
+        dueDate: todoData.dueDate
+      };
+      await store.addTodo(newTodo);
       toast.success("New task added successfully");
     }
     showAddModal.value = false;
@@ -263,9 +261,9 @@ const quickAddTodo = async () => {
   }
 
   try {
-    const todoData: TodoData = {
+    const todoData: TodoInput = {
       title: quickAdd.value.trim(),
-      priority: 'medium' as const,
+      priority: 'medium',
       description: ''
     };
 
