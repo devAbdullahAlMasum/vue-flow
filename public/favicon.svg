@@ -1,15 +1,15 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B5CF6" />
-      <stop offset="100%" style="stop-color:#7C3AED" />
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
-  <path d="M11 11L16 8L21 11M11 16L16 13L21 16M11 21L16 18L21 21"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        fill="none"/>
+  <!-- Background -->
+  <rect width="32" height="32" rx="8" fill="white"/>
+
+  <!-- Main Checkmark -->
+  <path
+    d="M8 16L14 22L24 12"
+    stroke="#2563EB"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+  <!-- Subtle Shadow -->
+  <rect width="32" height="32" rx="8" fill="black" fill-opacity="0.05"/>
 </svg>

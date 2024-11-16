@@ -1,30 +1,23 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Gradient Background -->
-  <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B5CF6" />
-      <stop offset="100%" style="stop-color:#7C3AED" />
-    </linearGradient>
-  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="white"/>
 
-  <!-- Rounded Rectangle Background -->
-  <rect width="512" height="512" rx="128" fill="url(#gradient)"/>
-
-  <!-- Minimal Flow Symbol -->
-  <path d="M176 176L256 128L336 176M176 256L256 208L336 256M176 336L256 288L336 336"
-        stroke="white"
-        stroke-width="32"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        fill="none">
-    <animate attributeName="stroke-dasharray"
-             from="0,1000"
-             to="1000,1000"
-             dur="2s"
-             begin="0s"
-             fill="freeze"/>
+  <!-- Main Checkmark -->
+  <path
+    d="M128 256L224 352L384 192"
+    stroke="#2563EB"
+    stroke-width="48"
+    stroke-linecap="round"
+    stroke-linejoin="round">
+    <animate
+      attributeName="stroke-dasharray"
+      from="0,1000"
+      to="1000,1000"
+      dur="1s"
+      begin="0s"
+      fill="freeze"/>
   </path>
 
-  <!-- Subtle Inner Glow -->
-  <rect width="512" height="512" rx="128" fill="white" fill-opacity="0.1"/>
+  <!-- Subtle Shadow -->
+  <rect width="512" height="512" rx="128" fill="black" fill-opacity="0.05"/>
 </svg>
