@@ -113,15 +113,15 @@
 import { ref, onMounted, watch } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { usePreferencesStore } from '@/stores/preferences';
+import type { Todo } from '@/stores/todo';
 
 const preferences = usePreferencesStore();
 
-const props = defineProps({
-  editingTodo: {
-    type: Object,
-    default: null
-  }
-});
+interface Props {
+  editingTodo?: Todo | null;
+}
+
+const props = defineProps<Props>();
 
 const form = ref({
   title: '',

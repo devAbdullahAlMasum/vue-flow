@@ -96,7 +96,7 @@
   <!-- Add Task Modal -->
   <AddTaskModal
     v-if="showAddModal"
-    :editing-todo="editingTodo"
+    :editing-todo="editingTodo || undefined"
     @close="closeModal"
     @add="addTodo"
   />
