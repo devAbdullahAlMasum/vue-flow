@@ -110,23 +110,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { usePreferencesStore } from '@/stores/preferences';
 import type { Todo } from '@/stores/todo';
 
 const preferences = usePreferencesStore();
 
+// Update the Props interface to be more specific
 interface Props {
-  editingTodo?: Todo | null;
+  editingTodo: Todo | undefined; // Remove null, only allow Todo or undefined
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  editingTodo: undefined
+});
 
-const form = ref({
+interface FormData {
+  title: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high';
+  dueDate: string;
+}
+
+const form = ref<FormData>({
   title: '',
   description: '',
-  priority: 'medium' as 'low' | 'medium' | 'high',
+  priority: 'medium',
   dueDate: ''
 });
 

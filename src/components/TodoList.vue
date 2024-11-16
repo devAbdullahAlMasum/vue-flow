@@ -140,12 +140,12 @@ const store = useTodoStore();
 const preferences = usePreferencesStore();
 const showAddModal = ref(false);
 const quickAdd = ref('');
-const editingTodo = ref<Todo | null>(null);
+const editingTodo = ref<Todo | undefined>(undefined);
 const toast = useToast()
 const showConfirmDelete = ref(false);
-const todoToDelete = ref<string | null>(null);
+const todoToDelete = ref<string | undefined>(undefined);
 const showConfirmComplete = ref(false);
-const todoToToggle = ref<Todo | null>(null);
+const todoToToggle = ref<Todo | undefined>(undefined);
 
 const filters: Array<{ label: string; value: 'all' | 'active' | 'completed' | 'important' | 'bookmarked' }> = [
   { label: 'All Tasks', value: 'all' },
@@ -180,7 +180,7 @@ const toggleTodo = async (todo: Todo) => {
 
 const closeModal = () => {
   showAddModal.value = false;
-  editingTodo.value = null;
+  editingTodo.value = undefined;
 };
 
 const editTodo = (todo: Todo) => {
@@ -204,7 +204,7 @@ const handleDeleteConfirm = async () => {
     console.error('Error deleting todo:', error);
   } finally {
     showConfirmDelete.value = false;
-    todoToDelete.value = null;
+    todoToDelete.value = undefined;
   }
 };
 
@@ -219,7 +219,7 @@ const handleCompleteConfirm = async () => {
     console.error('Error updating todo:', error);
   } finally {
     showConfirmComplete.value = false;
-    todoToToggle.value = null;
+    todoToToggle.value = undefined;
   }
 };
 
@@ -235,7 +235,7 @@ const addTodo = async (todoData: TodoData) => {
 
       await store.updateTodo(editingTodo.value.id, updates);
       toast.success("Task updated successfully");
-      editingTodo.value = null;
+      editingTodo.value = undefined;
     } else {
       const newTodo: TodoInput = {
         title: todoData.title,
